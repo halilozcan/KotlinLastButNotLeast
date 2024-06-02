@@ -1,25 +1,20 @@
 package org.example
 
-typealias WorkerMapper<T> = (Worker) -> T
+typealias Func<A, B> = (A) -> B
 
-fun List<Worker>.total(fn: WorkerMapper<Double>): Double =
-    fold(0.0) { total, worker -> total + fn(worker) }
+val getSalary: Func<Worker, Salary> = { worker -> worker.salary }
+
+val formatSalary: Func<Salary, String> =
+    fun(salaryData: Salary) = "value: ${salaryData.value}${salaryData.currency}"
+
+infix fun <A, B, C> Func<B, C>.after(f: Func<A, B>): Func<A, C> = { x: A -> this(f(x)) }
 
 fun main() {
-    var mapper: WorkerMapper<Double> = ::workerWeight
+    // Composition olmadan
+    val result: String = formatSalary(getSalary(workers[0]))
+    println(result)
 
-    val currency: WorkerMapper<String> = { worker -> worker.salary.currency }
-
-    println("Weight of ${workers[0].name} is ${mapper(workers[0])} Kg")
-
-    mapper = ::workerSalary
-
-    println("Price of ${workers[0].name} is ${mapper(workers[0])}${currency(workers[0])}")
-
-    // 1
-    val totalPrice = workers.total { it.salary.value }
-    val totalWeight = workers.total { it.weight }
-    // 2
-    println("Total Price: ${totalPrice} £")
-    println("Total Weight: ${totalWeight} Kg")
+    // Composite edilmiş sonuç
+    val compositeResult: String = (formatSalary after getSalary)(workers[0])
+    println(compositeResult)
 }

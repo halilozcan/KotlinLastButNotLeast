@@ -1,80 +1,59 @@
 package org.example
 
-open class A {
-    //some methods & member variable
+/**
+ * Genericler inheritance kavramı normalden farklıdır. Örneğin X sınıfı Y sınıfının alt
+ * sınıfı olarak düşünülürse Array<X>, Array<Y> nin alt tipi olarak kabul edilmez.
+ * Bu durum variance yaparak çözülür.
+ */
+
+/**
+ * Type nesnelerin paylaştıkları propertyleri tanımlar. Yani derleyiciye yazılımcının
+ * veriyi nasıl kullanmayı planladığını söyler.
+ *
+ * Class ise bu tipin bir implementasyonudur.
+ */
+
+data class Kitty(val kittyName: String) : Mammal(kittyName) {
+    override fun eat() {}
+    override fun sleep() {}
 }
 
-class B : A() {
-    // some mehods & member variables
+data class Lion(val lionName: String) : Mammal(lionName) {
+    override fun eat() {}
+    override fun sleep() {}
+}
+
+open class Mammal(val name: String) {
+    open fun eat() {}
+    open fun sleep() {}
 }
 
 /**
- * Invariance; tam olarak belirlenen tipin kullanılmasıdır
+ * Burada Mammal belirtilip Kitty gönderilebilmesinin sebebi List in out ile işaretlenip
+ * covariance sağlamasıdır. Covariance gönderilen tipin alt tipinin de gönderilmesini
+ * sağlar. Fonksiyon parametresi ile gönderilen parametre eşleşmediklerinde kabul
+ * kriterleri, bunların en azından tanımlanan tipin alt türü olmasıdır.
  */
-class InvarianceGenericClass<T : A> {
-
-}
-
-/**
- * Covariance; super type yerine subtype kullanılması
- * Sadece out position da kullanılabilir yani fonksiyonun return type ı olarak
- * kullanılabilir.
- * val property olarak kullanılabilir, var property olarak kullanılmaz.
- */
-class CovarianceGenericClass<out T : A> {
-
-}
-
-/**
- * Contravariance; subtype yerine supertype ın kullanılması
- * Sadece in position da yani parametre olarak kullanılabilir
- * out position olarak kullanılamaz yani val ya da var propery olarak kullanılmaz
- */
-class ContravarianceGenericClass<in T : A> {
-
-}
-
-
-
-
-
-/**
- * Out ve in positionlarda constructorlar bu parametre olarak alma kuralına tabi
- * tutulmazlar.
- * Java nın aksine Kotlin tarafında declaration-site variance şeklinde sınıflar
- * yazılırken type parametreleri tanımlanabilir. Java da WildCards'a (*) ihtiyaç
- * bulunmaktadır. Böylece fazlasıyla boilerplate code yazılmamış olur.
- */
-class ReadOnlyBox<out T>(private var item: T) {
-    fun getItem(): T = item
-}
-
-class WriteOnlyBox<in T>(private var item: T) {
-    fun setItem(newItem: T) {
-        item = newItem
+fun feed(elements: List<Mammal>) {
+    elements.forEach {
+        it.eat()
     }
 }
 
 fun main() {
-    /**
-     * B a nın alt tipidir. Bundan dolay B de anın alt tipi olduğu için üretilebilir
-     */
-    val a: A = B()
+    val kitties = listOf(Kitty("A"), Kitty("B"), Kitty("C"))
+    val lions = listOf(Lion("D"), Lion("E"))
 
-    /**
-     * Typelar uyuşmaz. Invariance demek bütün tam olarak verilen tipin kullanılması
-     * demektir.
-     */
-    // val invariance1: InvarianceGenericClass<A> = InvarianceGenericClass<B>()
-    // val invariance2: InvarianceGenericClass<B> = InvarianceGenericClass<A>()
+    // Covariance
+    feed(kitties)
+    feed(lions)
 
-    /**
-     * Sınıfın alt tipinin kullanılabilmesi için out ile işaretlenmesi gereklidir.
-     */
-    val covarianceGenericClass: CovarianceGenericClass<A> = CovarianceGenericClass<B>()
+    val allElements = listOf(Kitty("D"), Kitty("A"), Lion("C"))
 
-    /**
-     * Sınıfın üst tipinin kullanulabilmesi için in ile işaretlenmesi gereklidir.
-     */
-    val contravarianceGenericClass: ContravarianceGenericClass<B> = ContravarianceGenericClass<A>()
+    // Contravariance
+    val compareNames = Comparator { o1: Mammal, o2: Mammal ->
+        o1.name.first().code - o2.name.first().code
+    }
+
+    println(allElements.sortedWith(compareNames))
 }

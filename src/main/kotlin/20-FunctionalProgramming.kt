@@ -1,20 +1,48 @@
 package org.example
 
-typealias Func<A, B> = (A) -> B
+class Logger {
+    var log = StringBuilder()
+    fun log(str: String) {
+        log = log.append(str).append("\n")
+    }
+}
 
-val getSalary: Func<Worker, Salary> = { worker -> worker.salary }
+val logger = Logger()
 
-val formatSalary: Func<Salary, String> =
-    fun(salaryData: Salary) = "value: ${salaryData.value}${salaryData.currency}"
+val getSalaryWithLog: Func<Worker, Salary> = {
+    logger.log("Salary calculated for ${it.id}")
+    it.salary
+}
 
-infix fun <A, B, C> Func<B, C>.after(f: Func<A, B>): Func<A, C> = { x: A -> this(f(x)) }
+val formatSalaryWithLog: Func<Salary, String> = {
+    logger.log("Bill line created")
+    "value: ${it.value} ${it.currency}"
+}
+
+typealias Writer<T, R> = (T) -> Pair<R, String>
+
+val fpGetSalary: Writer<Worker, Salary> =
+    fun(worker: Worker) = getSalary(worker) to "Price calculated for ${worker.id}"
+
+val fpFormatSalary: Writer<Salary, String> =
+    fun(salary: Salary) = formatSalary(salary) to "Bill line created for ${formatSalary(salary)}"
+
+infix fun <A, B, C> Writer<A, B>.compose(f: Writer<B, C>): Writer<A, C> =
+    { x: A ->
+        val p1 = this(x)
+        val p2 = f(p1.first)
+        p2.first to p1.second + "\n" + p2.second
+    }
 
 fun main() {
-    // Composition olmadan
-    val result: String = formatSalary(getSalary(workers[0]))
-    println(result)
 
-    // Composite edilmiş sonuç
-    val compositeResult: String = (formatSalary after getSalary)(workers[0])
-    println(compositeResult)
+    // Condition race ile
+    formatSalaryWithLog(getSalaryWithLog(workers[0]))
+    println(logger.log)
+
+    // Condition race olmadan
+    val getPriceWithLog = fpGetSalary compose fpFormatSalary
+    workers.forEach { worker ->
+        println(getPriceWithLog(worker).second)
+    }
 }

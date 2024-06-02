@@ -1,25 +1,25 @@
 package org.example
 
-data class Salary(val value: Double, val currency: String = "$")
+typealias WorkerMapper<T> = (Worker) -> T
 
-data class Worker(val id: String, val name: String, val salary: Salary, val weight: Double)
-
-val workers = listOf(
-    Worker("1", "Halil", Salary(4000.00, "£"), 105.1),
-    Worker("2", "Metehan", Salary(3000.00, "£"), 60.8)
-)
-
-fun workerWeight(worker: Worker) = worker.weight
-
-fun workerSalary(worker: Worker) = worker.salary.value
-
-val workerWeightFun = fun(worker: Worker) = worker.weight
-val workerSalaryFun = fun(worker: Worker) = worker.salary.value
+fun List<Worker>.total(fn: WorkerMapper<Double>): Double =
+    fold(0.0) { total, worker -> total + fn(worker) }
 
 fun main() {
-    var workerFun = workerWeightFun
-    println("Worker weight: ${workerFun(workers[0])} Kg")
+    var mapper: WorkerMapper<Double> = ::workerWeight
 
-    workerFun = workerSalaryFun
-    println("Worker salary: ${workerFun(workers[0])} £")
+    val currency: WorkerMapper<String> = { worker -> worker.salary.currency }
+
+    println("Weight of ${workers[0].name} is ${mapper(workers[0])} Kg")
+
+    mapper = ::workerSalary
+
+    println("Price of ${workers[0].name} is ${mapper(workers[0])}${currency(workers[0])}")
+
+    // 1
+    val totalPrice = workers.total { it.salary.value }
+    val totalWeight = workers.total { it.weight }
+    // 2
+    println("Total Price: ${totalPrice} £")
+    println("Total Weight: ${totalWeight} Kg")
 }
