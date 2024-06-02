@@ -1,10 +1,5 @@
 package org.example
 
-/**
- * Abstract classlar abstract fonksiyonlar aracılığıyla kendi üzerindeki
- * sorumluluğu kendini kalıtım alan sınıfa aktarır. Böylece kendini kalıtım
- * alan sınıf çalışan implementasyonu sağlar.
- */
 abstract class Employee(val name: String, val experience: Int, open val dateOfBirth: Int) {
 
     abstract var salary: Double
@@ -26,14 +21,12 @@ class SoftwareEngineer(name: String, experience: Int, override val dateOfBirth: 
     override fun dateOfBirth(): String {
         return "Birth date is:$dateOfBirth"
     }
-
 }
 
 /**
  * Abstract classlar interfacelerin bütün implementasyonlarının override edilmesini
  * işlemini kendilerine alarak kod fazlalığını engeller
  */
-
 interface AnimationListener {
     fun onStart()
     fun onResume()
