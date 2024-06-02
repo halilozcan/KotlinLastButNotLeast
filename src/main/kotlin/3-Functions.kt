@@ -47,12 +47,6 @@ class Operation {
  * nullable fonksiyon tanımlamak için ((Int,Int)->Int)?
  */
 
-typealias SumFunction = (Int, Int) -> Int
-
-fun typeAliasFunction(action: SumFunction): Int {
-    return action.invoke(1, 2)
-}
-
 /**
  * Lambda expressionlar değer olarak döndürebilir.
  */
@@ -77,5 +71,4 @@ fun main() {
     val filterFunction = fun(a: String): Boolean = a.length > 5
 
     names.filter(filterFunction)
-
 }
