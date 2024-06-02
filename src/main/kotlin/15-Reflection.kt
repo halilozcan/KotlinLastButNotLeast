@@ -84,7 +84,6 @@ fun main() {
     val oddLength = unionConditions(::isOdd, ::length)
     val names = listOf("Halil", "Metehan", "Serdar", "İbrahim")
     println(names.filter(oddLength))
-
     println(names.isEmptyStringList())
 
     println(::counter.get())

@@ -13,7 +13,7 @@ class Person(val name: String, var lastName: String, val born: Int) {
      * fonksiyonlar val ve var durumuna göre oluştuğu için get ve set isimli
      * fonksiyonlar tanımlanamaz
      */
-    fun getName() = name
+    // fun getName() = name
 
     /**
      * Custom bir şekilde getter oluşturabilirsiniz. Property e her eriştiniz
