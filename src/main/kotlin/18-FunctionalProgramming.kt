@@ -16,10 +16,10 @@ fun main() {
 
     println("Price of ${workers[0].name} is ${mapper(workers[0])}${currency(workers[0])}")
 
-    // 1
+
     val totalPrice = workers.total { it.salary.value }
+    println("Total Price: $totalPrice £")
+
     val totalWeight = workers.total { it.weight }
-    // 2
-    println("Total Price: ${totalPrice} £")
-    println("Total Weight: ${totalWeight} Kg")
+    println("Total Weight: $totalWeight Kg")
 }
