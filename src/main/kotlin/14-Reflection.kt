@@ -13,13 +13,6 @@ import kotlin.reflect.jvm.isAccessible
 class ReflectionClass
 
 /**
- * Eğer bir sınıfın üyesi veya extension fonksiyonu kullanılmak
- * istenirse; String::toCharArray
- */
-
-val isEmptyStringList: List<String>.() -> Boolean = List<String>::isEmpty
-
-/**
  * Fonksiyonlara da reflection ile ulaşılabilir. Fonksiyonlar, propertyler
  * ve constructorlar callable referance olarak geçerler ve ortak süper
  * tipleri KCallable<out R> olarak geçer.
@@ -30,24 +23,6 @@ val isEmptyStringList: List<String>.() -> Boolean = List<String>::isEmpty
  */
 
 fun isOdd(x: Int) = x % 2 == 0
-
-fun length(s: String) = s.length
-
-fun <A, B, C> unionConditions(f: (B) -> C, g: (A) -> B): (A) -> C {
-    return {
-        f(g(it))
-    }
-}
-
-var counter = 1
-
-data class UserData(var name: String)
-
-class Empty
-
-fun createEmpty(initializer: () -> Empty) {
-    val empty = initializer()
-}
 
 class ClassWithPrivateInstructor private constructor()
 
@@ -78,31 +53,19 @@ fun main() {
     val reflectionJava = ReflectionClass::class.java
     println(reflectionJava.constructors.size)
 
-    val numbers = listOf(1, 2, 3)
-    println(numbers.filter(::isOdd))
-
-    val oddLength = unionConditions(::isOdd, ::length)
-    val names = listOf("Halil", "Metehan", "Serdar", "İbrahim")
-    println(names.filter(oddLength))
-    println(names.isEmptyStringList())
-
-    println(::counter.get())
-    println(::counter.name)
-    ::counter.set(2)
 
     /**
      * Property referansı tek bir parametre bekleyen fonksiyonlarda
      * kullanılabilir
      */
+    val names = listOf("Halil", "Metehan", "Serdar", "İbrahim")
     println(names.map(String::length))
 
-    val name = UserData::name
-    println(name.get(UserData("Halil")))
-
     /**
-     * Constructorsız bir sınıfın reflection ile kullanımı
+     * Gelecek parametreler fonksiyona uyuyorsa bu şekilde reflection yaparak kullanılabilir.
      */
-    createEmpty(::Empty)
+    val numbers = listOf(1, 2, 3)
+    println(numbers.filter(::isOdd))
 
     val privateClass = createPrivateClassWithReflection()
 

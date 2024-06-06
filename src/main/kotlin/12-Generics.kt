@@ -50,10 +50,10 @@ fun main() {
 
     val allElements = listOf(Kitty("D"), Kitty("A"), Lion("C"))
 
-    // Contravariance
     val compareNames = Comparator { o1: Mammal, o2: Mammal ->
         o1.name.first().code - o2.name.first().code
     }
 
+    // Contravariance
     println(allElements.sortedWith(compareNames))
 }
