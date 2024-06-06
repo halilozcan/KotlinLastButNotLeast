@@ -59,25 +59,6 @@ val value: String by lazy {
     "Hello"
 }
 
-class PersonDelegate {
-    /**
-     * Atamalara yapılan değişiklikleri takip edebilmek için observable
-     * delegation ı kullanılır
-     */
-    var name: String by Delegates.observable("Initial") { property, oldValue, newValue ->
-        println("observable -> old:$oldValue new:$newValue")
-    }
-
-    /**
-     * Eğer atamaların veto edilmesini yani kabul edilmemesi isteniyorsa
-     * vetoable kullanılabilir
-     */
-    var lastName: String by Delegates.vetoable("Initial") { property, oldValue, newValue ->
-        println("vetoable -> old:$oldValue new:$newValue")
-        return@vetoable newValue.length >= 5
-    }
-}
-
 /**
  * Json parsing vb. işlemleri kolaylaştırmak için map delegation
  * kullanılabilir.
@@ -123,31 +104,6 @@ fun userDelegation(userDelegate: UserDelegate = UserDelegate()): ReadWriteProper
     }
 
 val userDelegate: UserDelegate by userDelegation()
-var userDelegation: UserDelegate by userDelegation()
-
-/**
- * Kotlin de bir değişkene tanımlama anında değer ataması yapılmak
- * istenmezse ve daha sonradan değer ataması yapılmak istenirse
- * lateinit anahtar kelimesi kullanılır. lateinit anahtar kelimesi
- * primitive tiplerde kullanılamaz. Initialize edilmesinin kontrolü
- * reflection ile beraber sınıf referansı alınarak yapılır.
- */
-
-class LateInitProperty {
-    private lateinit var info: String
-
-    fun setInfo(info: String) {
-        this.info = info
-    }
-
-    fun getInfo(): String? {
-        return if (this::info.isInitialized) {
-            info
-        } else {
-            null
-        }
-    }
-}
 
 /**
  * Primitive bir tipin tanımlaması yapılırken ilk değer atanması
@@ -239,19 +195,7 @@ fun main() {
     println(value)
     println(value)
 
-    val personObservable = PersonDelegate()
-    personObservable.name = "Hello"
-    personObservable.name = "Halil"
-
-    personObservable.lastName = "Hello"
-    personObservable.lastName = "Abc"
-    println("vetoable -> last value:${personObservable.lastName}")
-
-    val userMapDelegate = UserMapDelegate(
-        mapOf(
-            "name" to "Halil", "age" to 25
-        )
-    )
+    val userMapDelegate = UserMapDelegate(mapOf("name" to "Halil", "age" to 25))
 
     println(userMapDelegate.name)
     println(userMapDelegate.age)
