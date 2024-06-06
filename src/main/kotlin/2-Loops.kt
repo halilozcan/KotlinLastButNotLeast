@@ -9,7 +9,7 @@ fun main() {
             if (i == 5) {
                 break@outerLoop
             }
-            //println("i:$i j:$j")
+            println("i:$i j:$j")
         }
     }
 
@@ -22,7 +22,7 @@ fun main() {
     }
 
     /**
-     * Direkt fonksiyona dönüş için kullanılır
+     * Direkt run a dönüş için kullanılır
      */
     run loop@{
         intArrayOf(1, 2, 3, 4, 5).forEach {
