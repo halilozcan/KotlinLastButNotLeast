@@ -44,22 +44,6 @@ class Delegate {
 }
 
 /**
- * Lazy delegation
- * İlk çağırmada property nin değeri hesaplanır. Daha sonraki çağırımlar
- * ilk olarak hesaplanan değeri döndürür
- * Değerlendirme işlemi varsayılan olarak synchronized dır. Yani değer
- * sadece bir thread de hesaplanır ancak bütün threadler aynı değeri
- * görürler. Eğer initialization işleminde multiple threadin erişilmesi
- * istenmiyor lazy fonksiyonuna LazyThreadSafetyMode.PUBLICATION
- * gönderilebilir
- */
-
-val value: String by lazy {
-    println("First time calling")
-    "Hello"
-}
-
-/**
  * Json parsing vb. işlemleri kolaylaştırmak için map delegation
  * kullanılabilir.
  * Sadece val değil var propertylerde de kullanılabilir.
@@ -191,9 +175,6 @@ fun main() {
     val example = DelegationSample()
     println(example.delegated)
     example.delegated = "Hello"
-
-    println(value)
-    println(value)
 
     val userMapDelegate = UserMapDelegate(mapOf("name" to "Halil", "age" to 25))
 
