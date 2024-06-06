@@ -39,8 +39,8 @@ fun main() {
 
     val devices = mutableListOf(Telephone(), Telephone(), Computer())
 
-    copyData(computers, devices) // List<Device> is subtype of List<Computer>
-    copyData(telephones, devices) // List<Device> is subtype of List<Telephone>
+    copyData(computers, devices)
+    copyData(telephones, devices)
 
     /**
      * Compiler hatası verir. Çünkü Computer ve Telephone arasında bir typing yoktur
