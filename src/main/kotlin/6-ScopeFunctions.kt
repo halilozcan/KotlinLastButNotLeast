@@ -10,7 +10,6 @@ private var globalName: String? = "Hello"
 
 var height = 180
 
-
 fun main() {
 
     val person: Person? = Person("", "", 1990)
@@ -37,16 +36,11 @@ fun main() {
 
     numbers.map { it / 2 }.filter { it > 3 }.let(::println)
 
-    val name: String? = "Hello"
+    doSomethingWithPersonLet(person)
 
-    /**
-     * genellikle null olmayan değerleri kullanmak ve bu amaçla bir kod bloğu
-     * oluşturmak için kullanılır.
-     */
-    val length = name?.let {
-        println(it.length)
-        it.length
-    }
+    parseNameLet("Halil")
+
+    parseNameGloballyLet()
 
     /**
      * with
@@ -134,23 +128,16 @@ fun main() {
     }
 }
 
-fun getPersonInfoRun(person: Person?, height: Int) {
-    val result = person?.run {
-        this.height = height
-        "$name $gender $height"
+// it ve this ile karışıklığı engellemek için kullanılabilir.
+fun doSomethingWithPersonLet(person: Person?) {
+    person?.let {
+        height = it.height
     }
 }
 
 fun parseNameLet(name: String?) {
     name?.let {
         // Do something with str
-    }
-}
-
-// it ve this ile karışıklığı engellemek için kullanılabilir.
-fun doSomethingWithPersonLet(person: Person?) {
-    person?.let {
-        height = it.height
     }
 }
 
@@ -164,38 +151,10 @@ fun parseNameGloballyLet() {
     }
 }
 
-fun sumHeightOfPersonWithValueLet(person: Person?): Int? {
-    // chain ile kullanım bir sürü null kontrole sebep olacağı için
-    // sadece let kullanılır
-    // return person?.height?.sumWith(3)
-    return person?.let {
-        height.plus(3)
+fun getPersonInfoRun(person: Person?, height: Int) {
+    val result = person?.run {
+        this.height = height
+        "$name $gender $height"
     }
 }
 
-fun processNumbersLet(array: IntArray?): Int? {
-    var sum = 0
-
-    if (array != null) {
-        sum = array.filter {
-            it > 3
-        }.map {
-            it * 2
-        }.sum()
-    }
-
-    return sum
-
-    /**
-     * Burada array immutable olduğu için kullanılmaması gerektiği düşünülebilir
-     * ancak başka bir değişken oluşturmamak için let kullanılabilir.
-     */
-
-    return array?.let {
-        it.filter {
-            it > 3
-        }.map {
-            it * 2
-        }.sum()
-    }
-}
