@@ -25,7 +25,7 @@ class Person(val name: String, var lastName: String, val born: Int) {
     var info
         get() = "$name $lastName $born"
         set(value) {
-            parsePersonInfo(value)
+
         }
 
     /**
@@ -45,9 +45,6 @@ class Person(val name: String, var lastName: String, val born: Int) {
      * fonksiyonlarıdır. Aslında her şey bir propertydir.
      */
 
-    /**
-     *
-     */
     var height = 0
         set(value) {
             if (value >= 0) {
@@ -60,7 +57,7 @@ class Person(val name: String, var lastName: String, val born: Int) {
     /**
      * Backing property kullanımında arkaplanda grades değil sadece _grades
      * üretilir. grades e ulaşım sağlandığı zaman bir getter fonksiyonu oluşturulur.
-     * ve _grades döndürülüyor
+     * ve _grades döndürülür
      */
     private var _grades: IntArray? = null
     val grades: IntArray
@@ -71,8 +68,6 @@ class Person(val name: String, var lastName: String, val born: Int) {
             return _grades ?: throw Exception("failed")
         }
 }
-
-private fun parsePersonInfo(value: String) = ""
 
 /**
  * Equals hashcode gibi methodlar sadece primary constructora bakarlar
