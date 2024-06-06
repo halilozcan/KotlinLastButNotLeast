@@ -75,26 +75,26 @@ fun main() {
      * edilmiştir.
      */
 
-    /**
-     * run aynı anda hem nesneyi initialize etmek hem de bu işlemle bir dönüş
-     * değeri hesaplamak için kullanılır.
-     */
-
-    getPersonInfoRun(person, 180)
+    val fullName: String? = run {
+        person?.name?.plus(person.lastName)?.capitalize()
+    }
 
     /**
      * run aynı zamanda extension fonksiyon olmadan da kullanılır. Bu durumda
      * nesne olmaz. dönüş değeri lambda nın sonucudur.
      */
 
-    val fullName: String? = run {
-        person?.name?.plus(person.lastName)?.capitalize()
-    }
-
     val result = fullName ?: run {
         println("Name is null")
         throw Exception("Hello Mother Fucker")
     }
+
+    /**
+     * run aynı anda hem nesneyi initialize etmek hem de bu işlemle bir dönüş
+     * değeri hesaplamak için kullanılır.
+     */
+
+    getPersonInfoRun(person, 180)
 
     /**
      * apply
