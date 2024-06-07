@@ -79,6 +79,7 @@ inline fun higherOrderFunctionCrossInline(crossinline lambda: () -> Unit) {
      */
     normalFunction {
         lambda()
+        // return
     }
 }
 

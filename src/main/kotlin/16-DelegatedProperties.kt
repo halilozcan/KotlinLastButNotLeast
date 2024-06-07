@@ -19,9 +19,6 @@ import kotlin.reflect.KProperty
  * gerek yoktur ancak getValue() veya setValue() fonksiyonları tanımlanmak
  * zorundadır.
  */
-class DelegationSample {
-    var delegated: String by Delegate()
-}
 
 /**
  * Eğer delegation da val kullanılırsa sadece getValue fonksiyonunu
@@ -29,19 +26,22 @@ class DelegationSample {
  * fonksiyonu da yazılmalıdır.
  */
 
-class Delegate {
-    /**
-     * this ref objenin kendisidir.
-     * property parametresi ise property e ait bilgiler tutar.
-     */
-    operator fun getValue(thisRef: Any?, property: KProperty<*>): String {
-        return "$thisRef, thank you for delegating '${property.name}' to me!"
+class UserDelegate
+
+fun userDelegation(userDelegate: UserDelegate = UserDelegate()): ReadWriteProperty<Any?, UserDelegate> =
+    object : ReadWriteProperty<Any?, UserDelegate> {
+        var currentValue = userDelegate
+        override fun getValue(thisRef: Any?, property: KProperty<*>): UserDelegate {
+            return currentValue
+        }
+
+        override fun setValue(thisRef: Any?, property: KProperty<*>, value: UserDelegate) {
+            currentValue = value
+        }
     }
 
-    operator fun setValue(thisRef: Any?, property: KProperty<*>, value: String) {
-        println("$value has been assigned to '${property.name}' in $thisRef.")
-    }
-}
+val userDelegate: UserDelegate by userDelegation()
+
 
 /**
  * Json parsing vb. işlemleri kolaylaştırmak için map delegation
@@ -72,22 +72,6 @@ class DelegateAnotherProperty {
  * anonymous object ile de tanımlama yapılabilir. Bu fonksiyonlar
  * extension ve operator fonksiyon olarak tanımlanabilir
  */
-
-class UserDelegate
-
-fun userDelegation(userDelegate: UserDelegate = UserDelegate()): ReadWriteProperty<Any?, UserDelegate> =
-    object : ReadWriteProperty<Any?, UserDelegate> {
-        var currentValue = userDelegate
-        override fun getValue(thisRef: Any?, property: KProperty<*>): UserDelegate {
-            return currentValue
-        }
-
-        override fun setValue(thisRef: Any?, property: KProperty<*>, value: UserDelegate) {
-            currentValue = value
-        }
-    }
-
-val userDelegate: UserDelegate by userDelegation()
 
 /**
  * Primitive bir tipin tanımlaması yapılırken ilk değer atanması
@@ -172,10 +156,6 @@ fun <T : ViewBinding> BaseSampleFragment.viewBinding(factory: (BaseView) -> T): 
     }
 
 fun main() {
-    val example = DelegationSample()
-    println(example.delegated)
-    example.delegated = "Hello"
-
     val userMapDelegate = UserMapDelegate(mapOf("name" to "Halil", "age" to 25))
 
     println(userMapDelegate.name)

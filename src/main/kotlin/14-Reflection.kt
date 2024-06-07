@@ -53,14 +53,6 @@ fun main() {
     val reflectionJava = ReflectionClass::class.java
     println(reflectionJava.constructors.size)
 
-
-    /**
-     * Property referansı tek bir parametre bekleyen fonksiyonlarda
-     * kullanılabilir
-     */
-    val names = listOf("Halil", "Metehan", "Serdar", "İbrahim")
-    println(names.map(String::length))
-
     /**
      * Gelecek parametreler fonksiyona uyuyorsa bu şekilde reflection yaparak kullanılabilir.
      */
