@@ -25,5 +25,5 @@ fun main() {
     /**
      * Stringler immutable dır bir kere değer atandı mı o değiştirilemez.
      */
-    val str = "abcd"
+    var str = "abcd"
 }
