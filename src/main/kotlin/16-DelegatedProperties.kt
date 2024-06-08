@@ -42,7 +42,6 @@ fun userDelegation(userDelegate: UserDelegate = UserDelegate()): ReadWriteProper
 
 val userDelegate: UserDelegate by userDelegation()
 
-
 /**
  * Json parsing vb. işlemleri kolaylaştırmak için map delegation
  * kullanılabilir.

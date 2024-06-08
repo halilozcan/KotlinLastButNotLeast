@@ -1,10 +1,11 @@
 package org.example
 
 /**
- * Bazen sınıf içerisindeki bazı methodlar birbiriyle alakasız olabilirler. Bundan dolayı birbiriyle alakalı işlemleri
- * bir arada tanımlayabilmek için fonksiyon içerisinde fonksiyon tanımlanması yapılabilir. Local fonksiyonlar
- * kendileri çağırılmadan önce tanımlanmalıdır. Ayrıca local fonksiyonlar bir üst methodun değişkenlerine erişebilir.
- * Bu değişkenler referans tipli değişkenlere dönüşür ve alt method içerisinden erişilebilir.
+ * Bazen sınıf içerisindeki bazı methodlar birbiriyle alakasız olabilirler. Bundan dolayı birbiriyle alakalı
+ * işlemleri bir arada tanımlayabilmek için fonksiyon içerisinde fonksiyon tanımlanması yapılabilir. Local
+ * fonksiyonlar kendileri çağırılmadan önce tanımlanmalıdır. Ayrıca local fonksiyonlar bir üst methodun
+ * değişkenlerine erişebilir. Bu değişkenler referans tipli değişkenlere dönüşür ve alt method
+ * içerisinden erişilebilir.
  */
 fun login(userName: String, password: String): Boolean {
     fun validateInput(input: String) {

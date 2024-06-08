@@ -1,7 +1,8 @@
 package org.example
 
 /**
- * Eğer bir değişkeni nullable yaparsanız örneğin Int? aynı sınıf gibi davranır. Aksi takdirde primitive gibi davranır.
+ * Eğer bir değişkeni nullable yaparsanız örneğin Int? aynı sınıf gibi davranır. Aksi takdirde
+ * primitive gibi davranır.
  */
 
 fun main() {
